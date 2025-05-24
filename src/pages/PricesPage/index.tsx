@@ -25,7 +25,7 @@ export const PricesPage = (): JSX.Element => {
     const endpoint = viewMode === 'avg' ? 'avg-prices' : 'prices';
     setLoading(true);
     axios
-      .get<PriceData[]>(`${API_URL}/prices/${endpoint}`)
+      .get<PriceData[]>(`${API_URL}/${endpoint}`)
       .then((res) => {
         setData(res.data);
         setLoading(false);
