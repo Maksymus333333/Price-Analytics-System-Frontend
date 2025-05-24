@@ -26,6 +26,7 @@ h1 {
   width: 100%;
   border-collapse: collapse;
   box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+  margin-bottom: 20px;
 }
 
 .styled-table thead tr {
@@ -66,4 +67,74 @@ h1 {
 
 .export_btn:hover {
   background-color: #45a049;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255 255 255 / 70%);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+@media (width <= 768px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .styled-table {
+    display: block;
+    width: 100%;
+    -webkit-overflow-scrolling: touch; /* плавний скрол на iOS */
+    overflow-x: auto;
+  }
+
+  .styled-table thead,
+  .styled-table tbody,
+  .styled-table th,
+  .styled-table td,
+  .styled-table tr {
+    display: block;
+  }
+
+  .styled-table thead tr {
+    /* Ховаємо заголовок таблиці на маленьких екранах (опціонально) */
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .styled-table tbody tr {
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .styled-table tbody tr td {
+    position: relative;
+    padding: 8px 10px;
+    border: none;
+    text-align: left;
+    padding-left: 50%;
+  }
+
+  .styled-table tbody tr td::before {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    width: 45%;
+    content: attr(data-label);
+    font-weight: bold;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
 }
