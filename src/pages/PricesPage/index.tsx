@@ -1,7 +1,11 @@
 import React, { JSX, useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CSVLink } from 'react-csv';
+import analyticsIcon from '../../assets/icons/analytics.svg';
+import { ReactComponent as ArrowRightIcon } from '../../assets/icons/arrow-right.svg';
+import { ReactComponent as ArrowLeftIcon } from '../../assets/icons/arrow-left.svg';
 import './styles/styles.css';
 
 type PriceData = {
@@ -19,10 +23,16 @@ export const PricesPage = (): JSX.Element => {
   const [selectedProduct, setSelectedProduct] = useState<string>('Wszystko');
   const [selectedRegion, setSelectedRegion] = useState<string>('Wszystko');
   const [viewMode, setViewMode] = useState<'all' | 'avg'>('all');
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 20;
 
   const API_LOCAL = process.env.REACT_APP_API_LOCAL;
   const API_PROD = process.env.REACT_APP_API_PROD;
   const [hasError, setHasError] = useState(false);
+
+  const pageCount = Math.ceil(filteredData.length / itemsPerPage);
+  const offset = currentPage * itemsPerPage;
+  const currentItems = filteredData.slice(offset, offset + itemsPerPage);
 
   const fetchData = React.useCallback(async () => {
     const endpoint = viewMode === 'avg' ? 'avg-prices' : 'prices';
@@ -49,6 +59,10 @@ export const PricesPage = (): JSX.Element => {
   }, [fetchData]);
 
   useEffect(() => {
+    setCurrentPage(0);
+  }, [filteredData]);
+
+  useEffect(() => {
     let filtered = data;
 
     if (selectedProduct !== 'Wszystko') {
@@ -70,7 +84,11 @@ export const PricesPage = (): JSX.Element => {
       {loading && <div className="loading-overlay">Załadunek...</div>}
 
       <div className="container" style={{ filter: loading ? 'blur(2px)' : 'none' }}>
-        <h1>📊 Analiza cen produktów</h1>
+        <h1>
+          <img src={analyticsIcon} style={{ width: '40px', paddingRight: '10px' }} alt="AnalyticsIcon" />
+          Analiza cen produktów
+        </h1>
+
         {hasError && <div className="error">❌ cant loading </div>}
         <div className="filters">
           <label>
@@ -117,9 +135,9 @@ export const PricesPage = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((row, index) => (
+            {currentItems.map((row, index) => (
               <tr key={row.id ?? `${row.product}-${row.region}-${row.date}`}>
-                {viewMode === 'all' && <td data-label="#"> {index + 1} </td>}
+                {viewMode === 'all' && <td data-label="#"> {offset + index + 1} </td>}
                 <td data-label="Produkt">{row.product ?? '-'}</td>
                 <td data-label="Region">{row.region}</td>
                 <td data-label="Data">{row.date}</td>
@@ -129,7 +147,22 @@ export const PricesPage = (): JSX.Element => {
           </tbody>
         </table>
 
-        <h2 className="text-xl font-semibold mb-2">Tabela cen</h2>
+        <ReactPaginate
+          previousLabel={<ArrowLeftIcon className="arrow-icon" />}
+          nextLabel={<ArrowRightIcon className="arrow-icon" />}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={({ selected }) => setCurrentPage(selected)}
+          forcePage={currentPage}
+          containerClassName="pagination"
+          activeClassName="active"
+          previousClassName="pagination-previous"
+          nextClassName="pagination-next"
+        />
+
+        <h2 className="tabela-text">Tabela cen</h2>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={filteredData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
