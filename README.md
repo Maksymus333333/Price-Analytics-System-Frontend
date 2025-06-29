@@ -31,6 +31,11 @@ This app is part of a complete analytical system for tracking the prices of basi
 
 ---
 
+## To run:
+
+- npm i
+- npm start
+
 ## 🛠️ Tech Stack
 
 | Layer      | Technology        |
