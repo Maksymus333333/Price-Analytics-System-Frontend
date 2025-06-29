@@ -9,10 +9,9 @@ This frontend is built with **React + TypeScript** and visualizes processed data
 
 This app is part of a complete analytical system for tracking the prices of basic food items like:
 
-- 🥖 Bread  
-- 🥛 Milk  
-- 🥚 Eggs  
-
+- 🥖 Bread
+- 🥛 Milk
+- 🥚 Eggs
 
 **System layers:**
 
@@ -34,14 +33,12 @@ This app is part of a complete analytical system for tracking the prices of basi
 
 ## 🛠️ Tech Stack
 
-| Layer         | Technology          |
-|---------------|---------------------|
-| Frontend      | React, TypeScript   |
-| Charts        | Recharts            |
-| Styling       | CSS                 |
-| API Client    | Axios               |
-| Export        | Custom CSV logic    |
+| Layer      | Technology        |
+| ---------- | ----------------- |
+| Frontend   | React, TypeScript |
+| Charts     | Recharts          |
+| Styling    | CSS               |
+| API Client | Axios             |
+| Export     | Custom CSV logic  |
 
 ---
-
-
