@@ -180,7 +180,7 @@ export const PricesPage = (): JSX.Element => {
           nextClassName="pagination-next"
         />
 
-        <h2 className="tabela-text">Tabela cen</h2>
+        <h2 className="tabela-text">Tabela średnich cen</h2>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={getAveragedChartData()} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
