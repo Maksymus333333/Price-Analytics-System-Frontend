@@ -1,0 +1,7 @@
+.rsm-svg {
+  display: block;
+  width: 100% !important;
+  height: 500px !important;
+  margin: 0 auto;
+  max-width: 800px;
+}

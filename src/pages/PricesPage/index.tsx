@@ -76,6 +76,24 @@ export const PricesPage = (): JSX.Element => {
     setFilteredData(filtered);
   }, [data, selectedProduct, selectedRegion]);
 
+  const getAveragedChartData = (): { date: string; price: number }[] => {
+    const dateMap = new Map<string, number[]>();
+
+    filteredData.forEach((item) => {
+      if (!dateMap.has(item.date)) {
+        dateMap.set(item.date, []);
+      }
+      dateMap.get(item.date)?.push(item.price);
+    });
+
+    const averaged = Array.from(dateMap.entries()).map(([date, prices]) => ({
+      date,
+      price: prices.reduce((sum, p) => sum + p, 0) / prices.length,
+    }));
+
+    return averaged.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  };
+
   const products = Array.from(new Set(data.map((d) => d.product))).sort();
   const regions = Array.from(new Set(data.map((d) => d.region))).sort();
 
@@ -164,13 +182,13 @@ export const PricesPage = (): JSX.Element => {
 
         <h2 className="tabela-text">Tabela cen</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={filteredData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+          <LineChart data={getAveragedChartData()} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis dataKey="price" />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="price" stroke="#8884d8" name="Cena (zł" />
+            <Line type="monotone" dataKey="price" stroke="#8884d8" name="Średnia cena (zł)" />
           </LineChart>
         </ResponsiveContainer>
       </div>
